@@ -118,7 +118,7 @@ Nous avons ensuite tracé les mêmes courbes avec une valeur fixe de p=0.8
 
 
 <p align="center">
-  <img src="imgs/gloutvscoupp8.png" width="1000" title = "algo glouton vs algo couplage" >
+  <img src="imgs/goultvscoupp8.png" width="1000" title = "algo glouton vs algo couplage" >
 </p>
 
 
@@ -143,3 +143,66 @@ Ces deux algorithmes ne sont pas optimaux. L’algorithme de couplage est 2-appr
 La figure ci-dessous montre que l’algorithme glouton n’est pas optimal. En effet, sur cette instance, l’algorithme glouton retourne l’ensemble **{1,2,3,4}** alors que la solution optimale est **{2,3,4}**
 
 
+### Algorithmes de séparation et évaluation (Branch and Bound )
+
+#### Branchement Simple : 
+
+Dans cette partie, on se propose d’implémenter un algorithme de branchement simple. 
+
+Prendre une arête e = {u, v}, et considérer deux cas :
+
+* soit u est dans la couverture.
+* soit v est dans la couverture.
+
+Ainsi, partant d’un graphe initial G et d’un ensemble de sommets C vide représentant la solution, la première branche consiste à mettre u dans C et à raisonner sur le graphe où l’on asupprimé u (les arêtes incidentes à u sont couvertes) ; symétriquement, la deuxième consiste à
+mettre v dans C et à raisonner sur le graphe où l’on a supprimé v.
+
+
+Nous avons implémenté cet algorithme de façon récursive puis nous avons cherché à évaluer son efficacité en fonction de n et p.
+
+<p align="center">
+  <img src="imgs/simpleBranch.png" width="1000" title = "branchemet simple" >
+</p>
+
+La figure 8 montre que l’algorithme est de complexité temporelle exponentielle et que lorsque p augmente, le temps d’exécution augmente ce qui est cohérent.
+
+Dans toute la suite, on prendra p= 1/√n n où n est la taille de l’instance. Cela nous permettra d’avoir des graphes moins denses afin de faciliter les tests expérimentaux.
+
+#### Branchement avec evaluation (bande inf):
+
+On cherche maintenant une borne inférieure de notre graphe G afin d’avoir un critère de séparation nous permettant de gagner en complexité temporelle.
+
+La figure 9 montre que l’ajout de la borne inférieure nous fait bien gagner en complexité temporelle.
+
+
+<p align="center">
+  <img src="imgs/branchBorn.png" width="1000" title = "Branchemebt avec une borne" >
+</p>
+
+### Amélioration du branchement (Branch  and bound ):
+
+Lorsque l’on branche sur une arête e = {u, v}, dans la deuxième branche où l’on prend le sommet v dans la couverture, on peut supposer que l’on ne prend pas le sommet u (le cas où on le prend étant traité dans la première branche. Dans la 2ème branche, ne prenant pas u dans la
+couverture on doit alors prendre tous les voisins de u (et on peut les supprimer du graphe donc).
+
+Nous avons donc ajouté cette modification à l’algorithme et avons comparé ce dernier à l’algorithme précédent. Cela devrait nous faire gagner en complexité temporelle. Voici les résultats obtenus:
+
+<p align="center">
+  <img src="imgs/amelior1.png" width="1000" title = "Branchemebt amelioré 1" >
+</p>
+
+
+* Il est cependant encore possible d’améliorer le branchement. En effet, afin d’éliminer un maximum de sommets dans la deuxième branche, il semble intéressant de choisir le branchement
+de manière à ce que le sommet u soit de degré maximum dans le graphe restant.
+
+* De plus, si un sommet u est de degré 1, il existe toujours une couverture optimale qui ne contient pas u. En effet, prenons C une couverture minimale contenant u. u étant de degré 1, il possède un unique voisin v. En remplaçant u par v dans la couverture C, on garde toujours une
+couverture optimale.
+
+Voici les résultats obtenus:
+
+<p align="center">
+  <img src="imgs/amelior2.png" width="1000" title = "Branchemebt amelioré 2" >
+</p>
+
+
+
+**On remarque que le nombre de noeuds traités en environ une seconde est maintenant d’environ 45 soit plus du double de ce qui était traitable avec l’algorithme de départ (branchement sans bornes) pour une durée d’exécution similaire**.
