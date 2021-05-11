@@ -13,7 +13,6 @@ pour résoudre le problème ***Vertex Cover***, et de les tester expérimentalem
 
 * Soit un graphe G= (V, E) non orienté, où V est l’ensemble des n sommets et E l’ensemble des m arêtes de G. 
 * Une couverture de G est un ensemble V’⊆ V tel que toute arête e ∈ E a (aumoins) une de ses extrémités dans V.
-*
 * Le but du problème **Vertex Cover** est de trouver une couverture contenant un nombre mi-nimum de sommets. 
 
 ### Vertex-Cover est un problème NP-complet :
@@ -200,7 +199,7 @@ couverture optimale.
 Voici les résultats obtenus:
 
 <p align="center">
-  <img src="imgs/amelior2.png" width="1000" title = "Branchemebt amelioré 2" >
+  <img src="imgs/amelior2.png" width="700" title = "Branchemebt amelioré 2" >
 </p>
 
 
